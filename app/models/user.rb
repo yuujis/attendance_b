@@ -10,7 +10,7 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true    
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
   # 渡された文字列のハッシュ値を返します。
   def User.digest(string)
@@ -32,14 +32,6 @@ class User < ApplicationRecord
   def remember
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
-  end
-
-  # トークンがダイジェストと一致すればtrueを返します。
-  def destroy
-    # ログイン中の場合のみログアウト処理を実行します。
-    log_out if logged_in?
-    flash[:success] = 'ログアウトしました。'
-    redirect_to root_url
   end
 
   # ユーザーのログイン情報を破棄します。
