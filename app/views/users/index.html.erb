@@ -1,6 +1,13 @@
 <% provide(:title, 'All Users') %>
 <h1>ユーザー一覧</h1>
 
+<div class=" pull-right">
+<%= form_tag users_path, method: :get do %>
+  <%= text_field_tag :search %>
+  <%= submit_tag "検索", :name => nil, class: "btn-primary" %>
+<% end %>
+</div>
+
 <div class="col-md-10 col-md-offset-1">
   <%= will_paginate %>
   <table class="table table-condensed table-hover" id="table-users">
@@ -32,7 +39,7 @@
         <% end %>
         <td class="center">
           <% if current_user.admin? && !current_user?(user) %>
-            <%= link_to "基本情報編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>
+            <%= link_to "基本情報の修正", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>
             <%= link_to "削除", user, method: :delete,
                 data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
           <% end %>
